@@ -1,0 +1,24 @@
+<ion-content scroll="false">
+    <div class="row row-center bgTroco enlIni iniPagar" nav-direction="forward" ui-sref="index.pagar.cercanos"  style="height:{{heightPagar}}px">
+        <div>
+            <div class="iconIni"><i class="icon-pagar"></i> Pagar</div>
+            <p>Capacidad compra: <strong>{{ myUser.Capacidad_pago.Cantidad | currency }}</strong></p>
+        </div>
+    </div>
+    <div class="row row-center codigoIni bgTroco" id="pagarFooter">
+        <div class="col text-left">
+            <input type="number" ng-model="codigo_comercio_pagar.id" name="id" required placeholder="codigo de comercio" ng-blur="pagarGoDirect()">
+        </div>
+        <div class="col text-right"><a href="javascript:void(0)" class="button button-icon icon icon-scan_qr button-positive" ng-click="scannerQr()"></a></div>
+    </div>
+    <div class="row row-center enlIni iniCobrar" nav-direction="forward" ui-sref="index.cobrar" style="height:{{heightCobrar}}px">
+        <div>
+            <div class="iconIni"><i class="icon-cobrar"></i> Cobrar</div>
+            <p>Pedido máximo: <strong>{{ myUser.Obligacion_venta.Cantidad | currency }}</strong></p>
+        </div>
+    </div>
+    <div class="row row-center codigoIni" id="cobrarFooter">
+        <div class="col col-75 text-left"><p>Codigo de comercio:<br><strong>{{myUser.Codigo_comercio}}</strong></p></div>
+        <div class="col text-right"><a ui-sref="qr({id: myUser.Id})" class="button button-icon icon icon-qr positive"></a></div>
+    </div>
+</ion-content>

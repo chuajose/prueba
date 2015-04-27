@@ -1,0 +1,32 @@
+<ion-view view-title="Favoritas">
+    <ion-content>
+        <ion-spinner ng-if="cargando" class="spinner-positive"></ion-spinner>
+        <div ng-if="empresasFavoritasStorage.length < 1" class="text-center padding">
+          <p><strong>No tienes favoritos añade alguno</strong></p>
+        </div>
+        <ion-list class="listEmpresas">
+          <ion-item ng-repeat="empresasFavorita in empresasFavoritas" class="item-remove-animate">
+            <div class="row">
+              <div class="col col-67"><h2><strong>{{empresasFavorita.Razon_social}}</strong></h2></div>
+              <div class="col text-right distanciaEmpresaMap">({{empresasFavorita.distancia | number:2}} km)</div>
+            </div>
+            <div class="row">
+              <div class="col col-67">
+                {{empresasFavorita.actividad}}<br>
+                Pedido máximo: <strong>{{empresasFavorita.Obligacion_venta | currency}}</strong><br>
+                <a ui-sref="index.pagar_empresa_ver({id:empresasFavorita.Id})"  class="button button-clear button-positive verMas">Ver más</a>
+              </div>
+              <div class="col text-right">
+                <div>
+                    <star-rating rating-value="empresasFavorita.Valoracion/20" no-update="true" data-max="5" class="rating"></star-rating>
+                </div>
+                <a nav-direction="forward" ui-sref="index.pagar_empresa_ver({id:empresasFavorita.Id, pago:1})" class="button button-outline button-positive">PAGAR</a>
+              </div>
+            </div>
+            <div class="row">
+                <ion-option-button ng-click="deleteEmpresaFavorita(empresasFavoritaIid, $index)" class="button-stable favoritosRemove ion-ios-close"></ion-option-button>
+            </div>
+          </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

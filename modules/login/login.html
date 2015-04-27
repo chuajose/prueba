@@ -1,0 +1,35 @@
+<ion-content>
+    <div class="headerIni padding bgTroco" style="height: {{heightW-50}}px">
+        <img src="img/logo_wallet_inverse.png">
+        <p class="padding">Utiliza <strong>wallet</strong> para tus pagos en comercios, restaurantes y hoteles {{title}}</p>
+    </div>
+    <div class="sepIni bgTroco">
+        <div class="">INICIA SESIÓN</div>
+    </div>
+    <div class="list">
+        <form role="form" name="loginForm" novalidate="" ng-submit="login(loginForm);" autocomplete="off">
+            <label class="item item-input" ng-class="{ 'has-error' : loginForm.email.$invalid && loginForm.$submitted }">
+                <input type="email" ng-model="user.email" name="email" required placeholder="Email" tabindex="1">
+
+            </label>
+            <div class="form-errors" ng-show="loginForm.email.$invalid && loginForm.$submitted" ng-messages="loginForm.email.$error">
+                <div class="form-error" ng-message="required">Falta este campo.</div>
+                <div class="form-error" ng-message="email">Debe contener un email válido</div>
+            </div>
+            <label class="item item-input" ng-class="{ 'has-error' : loginForm.password.$invalid && loginForm.$submitted || flash.length }">
+                <input type="password" ng-model="user.password" name="password" required placeholder="Contraseña" tabindex="2">
+            </label>
+            <div class="form-errors" ng-show="loginForm.password.$invalid && loginForm.$submitted" ng-messages="loginForm.password.$error">
+                <div class="form-error" ng-message="required">Falta este campo.</div>
+            </div>
+            <div class="form-errors" ng-show="flash.length">
+                <div class="form-error">{{flash}}</div>
+            </div>
+            <div class="padding mTop20">
+                <button type="submit" class="button button-block button-positive">
+                    ENTRAR
+                </button>
+            </div>
+        </form>
+    </div>
+</ion-content>

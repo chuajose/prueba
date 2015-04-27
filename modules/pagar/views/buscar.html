@@ -1,0 +1,46 @@
+<ion-view view-title="buscar">
+    <ion-content>
+        <div class="list list-inset">
+            <form role="form" id="pagar-buscar-form" ng-submit="buscar(empresa);" autocomplete="on">
+              <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" ng-model="empresa" name="empresa" placeholder="Búsqueda">
+              </label>
+            </form>
+            <ion-spinner ng-if="cargando" class="spinner-positive"></ion-spinner>
+        </div>
+        <div class="card" ng-if="empresasBuscar && errorBuscar">
+          <div class="item item-text-wrap">
+            <p><span class="calm">{{errorBuscar}}</p>
+          </div>
+        </div>
+        <ion-list class="listEmpresas" ng-if="empresasBuscar">
+            <ion-item ng-repeat="empresaBuscar in empresasBuscar">
+                <div class="row">
+                  <div class="col col-67"><h2><strong>{{empresaBuscar.Razon_social}}</strong></h2></div>
+                  <div class="col text-right distanciaEmpresaMap">({{empresaBuscar.distancia | number:2}} km)</div>
+                </div>
+                <div class="row">
+                  <div class="col col-67">
+                    {{empresaBuscar.actividad}}<br>
+                    Pedido máximo: <strong>{{empresaBuscar.Obligacion_venta | currency}}</strong><br>
+                    <a ui-sref="index.pagar_empresa_ver({id:empresaBuscar.Id})"  class="button button-clear button-positive verMas">Ver más</a>
+                  </div>
+                  <div class="col text-right">
+                    <div>
+                        <star-rating rating-value="empresaBuscar.Valoracion/20" no-update="true" data-max="5" class="rating"></star-rating>
+                    </div>
+                    <a nav-direction="forward" ui-sref="index.pagar_empresa_ver({id:empresaBuscar.Id, pago:1})" class="button button-outline button-positive">PAGAR</a>
+                  </div>
+                </div>
+                <div class="row">
+                    <ion-option-button ng-class="{hide : empresasFavoritasStorage.indexOf(empresaBuscar.Id) &gt; -1}" ng-click="AddEmpresaFavorita(empresaBuscar.Id, empresasFavoritasStorage)" class="button-stable favoritosAdd ion-ios-star"></ion-option-button>
+                    <ion-option-button ng-class="{hide : empresasFavoritasStorage.indexOf(empresaBuscar.Id) == -1}" class="button-stable ion-ios-star favoritosInclude"></ion-option-button>
+                </div>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll on-infinite="buscarMore(pagina)"  distance="30%" ng-if="empresasBuscarMore"></ion-infinite-scroll>
+
+
+    </ion-content>
+</ion-view>

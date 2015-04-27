@@ -1,0 +1,82 @@
+<ion-view view-title="">
+    <ion-nav-title>
+       <p class="fsSemiSmall text-right padding-top"><strong>{{myUser.Codigo_comercio}}</strong><br>Codigo de comercio</p>
+    </ion-nav-title>
+    <ion-nav-buttons side="secondary">
+        <a ui-sref="qr({id: myUser.Id})" class="button button-icon icon icon-qr positive"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="row">
+            <div class="col text-left">Quieres tramitar la devolución de la operación?</div>
+        </div>
+        <div class="card">
+            <div class="item item-divider">
+                {{pedido.Referencia}}
+            </div>
+            <div class="item item-text-wrap">
+                <h2>{{pedido.Comprador.Razon_social}}</h2>
+            </div>
+            <div class="item item-divider">
+                {{pedido.Importe}} €
+            </div>
+        </div>
+        <div class="row" ng-show="devolucionAcciones">
+            <div class="col text-center">
+                <button ion-back class="button button-assertive">
+                    Cancelar
+                </button>
+            </div>
+            <div class="col text-center">
+                <button class="button button-positive" ng-click="mostrarMotivos()">
+                    Siguiente
+                </button>
+            </div>
+        </div>
+        <div class="row" ng-show="devolucionMotivos">
+           <ul class="list" style="width:100%">
+                <li class="item" ng-click="devolucion.id = 1 ; importeIncorrecto = ! importeIncorrecto ; devolucionArticulo = false ; otroMotivo = false">
+                  Importe incorrecto
+
+                </li>
+               <div class="row" ng-init="importeIncorrecto = false"  ng-show="importeIncorrecto">
+                        <p>Solicita al comprador que haga el pago por el importe correcto.
+
+                            Si tienes cualquier problema, ponte en contacto con nosotros.<br><button class="button button-balanced" ng-click="enviarDevolucion(devolucion)">Enviar</button></p>
+                </div>
+               <li class="item" ng-click="devolucion.id = 2 ; devolucionArticulo = ! devolucionArticulo ; importeIncorrecto = false ; otroMotivo = false">
+                  Devolución de articulo
+                </li>
+               <div class="row" ng-init="devolucionArticulo = false"  ng-show="devolucionArticulo">
+                        <p>Asegúrate de que ya tienes el artículo devuelto antes de tramitar la devolución.
+
+                            Si tienes cualquier problema, ponte en contacto con nosotros.<br><button class="button button-balanced" ng-click="enviarDevolucion(devolucion)">Enviar</button></p>
+                </div>
+               <li class="item" ng-click="devolucion.id = 2 ; otroMotivo = ! otroMotivo ; importeIncorrecto = false ; devolucionArticulo = false">
+                  Otro Motivo
+                </li>
+               <div class="row" ng-init="otroMotivo = false"  ng-show="otroMotivo">
+                        <p><label class="item item-input">
+                            <input type="text" placeholder="Motivo" ng-model="devolucion.motivoDevolucion">
+                          </label>
+                           <button class="button button-balanced" ng-click="enviarDevolucion(devolucion)">Enviar</button></p>
+                </div>
+            </ul>
+
+        </div>
+        <div ng-show="devolucionMotivos"  class="text-center">
+                <button ion-back class="button button-assertive">
+                    Cancelar
+                </button>
+            </div>
+        <div ng-show="devolucionFinalizada">
+            <div class="row" >
+                <div class="col"><p><i class="icon ion-checkmark-round"></i> El importe de la operación ya está disponible en la cuenta del comprador.</p></div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col col-center"><button class="button button-calm" ui-sref="inicio()">Vale</button></div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

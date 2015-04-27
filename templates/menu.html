@@ -1,0 +1,50 @@
+<ion-list class="menuIni">
+  <ion-item nav-clear menu-close class="text-right">
+    <a ion-back nav-direction="back"><!-- forward, back, enter, exit, swap. -->
+      <span class="icon ion-ios-arrow-back"></span>
+        Volver
+    </a>
+  </ion-item>
+  <ion-item nav-clear menu-close>
+    <a nav-direction="forward" ui-sref="inicio"><!-- forward, back, enter, exit, swap. -->
+      <i class="icon ion-ios-home"></i>
+        Inicio
+    </a>
+  </ion-item>
+  <ion-item nav-clear menu-close>
+    <a nav-direction="forward" ui-sref="index.pagar">
+      <i class="icon icon-pagar"></i>
+        Mis compras
+    </a>
+  </ion-item>
+  <ion-item nav-clear menu-close>
+    <a nav-direction="forward" ui-sref="index.cobrar">
+      <i class="icon icon-cobrar"></i>
+        Mis ventas
+    </a>
+  </ion-item>
+  <ion-item nav-clear menu-close>
+    <a nav-direction="forward" ui-sref="index.mi_cuenta">
+      <i class="icon ion-ios-person"></i>
+        Mi cuenta
+    </a>
+  </ion-item>
+  <ion-item nav-clear menu-close>
+    <a nav-direction="forward" ui-sref="index.configuracion">
+      <i class="icon ion-ios-gear"></i>
+        Configuración
+    </a>
+  </ion-item>
+  <ion-item nav-clear menu-close>
+    <a nav-direction="forward" ui-sref="index.ayuda">
+      <i class="icon ion-help-buoy"></i>
+        Ayuda
+    </a>
+  </ion-item>
+  <ion-item nav-clear menu-close>
+    <a nav-direction="forward" ng-click="appClose()">
+      <i class="icon ion-android-close"></i>
+        Cerrar APP
+    </a>
+  </ion-item>
+</ion-list>

@@ -1,0 +1,32 @@
+<ion-view view-title="Devoluciones">
+    <ion-content>
+        <ion-spinner ng-if="cargando"></ion-spinner>
+       <ion-list class="listEmpresas" style=" height: 100%;overflow: auto;" ng-show="!cargando">
+          <ion-item ng-repeat="pedido in pedidos">
+            <div class="row">
+              <div class="col col-67"><h3><strong>{{pedido.Usuario.Razon_social}}</strong></h3></div>
+              <div class="col text-right distanciaEmpresaMap">{{ pedido.Fecha | date : format : fullDate }}</div>
+            </div>
+            <div class="row">
+              <div class="col col-67">
+                Importe: <strong>{{pedido.Importe}}</strong><br>
+                Ref:{{pedido.Numero}}<br>
+              </div>
+              <div class="col text-right">
+                <a nav-direction="forward" ui-sref="index.cobrarVerPedido({id:pedido.Id})" class="button button-outline button-positive">Ver</a>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+        <div ng-if="sinDatos" class="card">
+          <div class="item item-text-wrap positive">
+            <i class="ion-close-circled positive"></i> No se han encontrado resultados.
+          </div>
+        </div>
+         <ion-infinite-scroll  ng-show="!cargando"
+            ng-if="cargarMasDatosPendientes"
+            distance="0%"
+            on-infinite="getPendientes()"
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,142 @@
+<ion-view view-title="">
+    <ion-content>
+        <ion-slide-box delegate-handle="empresa" active-slide="myActiveSlide" on-slide-changed="pagarChange($index);">
+            <ion-slide class="padding">
+                <ion-spinner ng-if="cargando" class="spinner-positive"></ion-spinner>
+                <h2 class="mBottom0">{{empresa.Razon_social}}</h2>
+                <p>Código de comercio: <strong>{{empresa.Codigo_comercio}}</strong></p>
+                <div class="row">
+                    <div class="col">
+                        <div class="fsSemiBig">
+                            <star-rating rating-value="empresa.Valoracion/20" no-update="true" data-max="5" class="rating"></star-rating>
+                        </div>
+                        <p>{{empresa.Sector.Nombre}}</p>
+                    </div>
+                    <div class="col text-right">
+                        <p>
+                            <a ng-if="empresasFavoritasStorage.indexOf(empresa.Id) &gt; -1" ng-click="deleteEmpresaFavorita(empresa.Id, $index)" class="positive">Quitar de favoritos</a>
+                            <a ng-if="empresasFavoritasStorage.indexOf(empresa.Id) == -1" ng-click="AddEmpresaFavorita(empresa.Id, empresasFavoritasStorage)" class="positive">Añadir a favoritos</a>
+                        </p>
+                        <p><a ng-click="ver_mas = !ver_mas" ng-init="ver_mas = true" class="positive">Ver más</a></p>
+                    </div>
+                </div>
+                <div class="row" ng-hide="ver_mas">
+                    <div class="card mTop0">
+                        <div class="item item-text-wrap">
+                            <div class="row row-top">
+                                <div class="col col-33">
+                                    <img ng-src="{{empresa.Logo.Url_thumb}}" class="img-responsive">
+                                </div>
+                                <div class="col">
+                                    <div class="row row-top padd0">
+                                        <p class="col col-20"><i class="icon ion-location positive fsSemiBig"></i></p>
+                                        <p class="col">
+                                            lat: {{empresa.Geoposicion.lat}}<br>lng: {{empresa.Geoposicion.lng}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                                {{empresa.Direccion.Direccion}}.<br>{{empresa.Direccion.Cp}}, {{empresa.Direccion.Localidad}}, {{empresa.Direccion.Provincia.Nombre}}
+                            </p>
+                            <p ng-if="empresa.Telefono1"><i class="icon ion-ios-telephone positive fsSemiBig"></i> <a href="+34{{empresa.Telefono1}}" class="button button-small button-clear button-positive">{{empresa.Telefono1}}</a></p>
+                            <p ng-if="empresa.Email"><i class="icon ion-ios-email positive fsSemiBig"></i> <a href="mailto:{{empresa.Email}}" class="button button-small button-clear button-positive">{{empresa.Email}}</a></p>
+                            <p ng-if="empresa.Web"><i class="icon ion-android-mail positive fsSemiBig"></i> <a href="{{empresa.Web}}" class="button button-small button-clear button-positive">{{empresa.Web}}</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="ver_mas"></div>
+                <button class="button button-large button-positive button-block" ng-click="goToPagar()">
+                  PAGAR
+                </button>
+                <ion-scroll direction="x" class="gallerympresa" ng-if="empresa.Imagenes">
+                    <a href=""><img ng-src="img" class="padding" ng-repeat="img in empresa.Imagenes track by $index"></a>
+                </ion-scroll>
+            </ion-slide>
+            <ion-slide class="padding" ng-show="!pagado">
+                <div ng-if="cargando" style="width:100%; height:300px;">
+                    <ion-spinner class="spinner-positive"></ion-spinner>
+                </div>
+                <div class="card" ng-show="errorUser">
+                  <div class="item item-text-wrap">
+                    <p><span class="assertive">{{errorUserTxt}}<br>Volver al</span> <a nav-direction="back" ui-sref="inicio" class="positive">INICO</a></p>
+                  </div>
+                </div>
+                <div ng-hide="errorUser">
+                    <div ng-show="!cargando">
+                        <div class="hide-on-keyboard-open">
+                            <p>Pagar a:</p>
+                            <h2>{{empresa.Razon_social}}</h2>
+                        </div>
+                        <div class="card" ng-if="errorTicket">
+                          <div class="item item-text-wrap">
+                            <p><span class="assertive">No se ha podido tramitar el pago</span><br>Inténtelo más tarde o consulte con su agente en el panel de <a ui-sref="index.ayuda" nav-direction="enter" class="positive">AYUDA</a></p>
+                          </div>
+                        </div>
+                        <!-- ng-click="pagarTicket(importe);" lo puse en el btn porque ng-submit en el form no enviaba al ctrl-->
+                        <form name="pagarForm">
+                            <div class="list list-inset">
+                              <label class="item item-input">
+                                <input type="number" ng-model="importe" name="importe" placeholder="Importe" required>
+                              </label>
+                            </div>
+                            <button ng-click="pagarTicket(importe);" ng-disabled='!pagarForm.$valid' class="button button-large button-positive button-block">
+                              PAGAR
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </ion-slide>
+            <ion-slide class="padding" ng-show="pagado">
+                <div class="card border balanced-border">
+                  <div class="item item-text-wrap balanced">
+                    <div class="row text-center">
+                        <div class="col col-25">
+                            <div class="fsBigx2 fLight"><i class="ion-android-checkmark-circle"></i></div>
+                        </div>
+                        <div class="col text-right">
+                            <div class="fsSemiBig fLight">Pago realizado</div>
+                            <div class="fsSemiBig mTop5">{{importe | currency}}</div>
+                            <p class="text-right mTop5">Id.operación: <strong>{{operacionId}}</strong></p>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <p>Si quieres puedes...</p>
+                <div class="padding stable-bg row">
+                    <div class="col">
+                        Valorar al vendedor
+                    </div>
+                    <div class="col text-center">
+                        <div class="fsSemiBig">
+                            <star-rating rating-value="rating" data-max="5" class="rating" on-rating-selected="rateFunction(rating)"></star-rating>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="padding stable-bg row">
+                    <div class="col">
+                        Guardar el ticket de compra
+                    </div>
+                    <div class="col text-center">
+                        <a class="button button-icon icon ion-android-camera positive" ng-click="subirTicket()"></a>
+                    </div>
+                </div>
+                <div class="row" ng-if="imagenes">
+                    <div class="col">
+                        <ul>
+                            <li class="padding text-center" ng-repeat="imagen in imagenes"><img src="{{imagen}}" on-double-tap="openImg(imagen)" class="img-responsive"></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-right fsSemiSmall mTop10">También podrás hacerlo más tarde</p>
+                <div class="padding">
+                    <button ui-sref="index.pagar.cercanos" nav-direction="back" class="button button-block button-positive button-outline">
+                      Finalizar
+                    </button>
+                </div>
+
+            </ion-slide>
+        </ion-slide-box>
+    </ion-content>
+</ion-view>

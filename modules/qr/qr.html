@@ -1,0 +1,15 @@
+<ion-view>
+    <ion-content>
+        <div class="bar bar-header bar-positive text-center">
+          <button ion-back class="button icon-left ion-chevron-left button-light">Atrás</button>
+          <h1 class="title">Código QR generado</h1>
+        </div>
+        <div class="has-header qrPageBody text-center">
+          <ion-spinner ng-if="cargando" class="spinner-positive"></ion-spinner>
+          <img ng-src="{{url_qr}}" ng-if="!cargando">
+        </div>
+    </ion-content>
+    <div class="footerQr padding">
+      <p>Indica a la persona que va a pagar que capture este código QR desde su aplicación.</p>
+    </div>
+</ion-view>

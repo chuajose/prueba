@@ -1,0 +1,66 @@
+<ion-view view-title="">
+    <ion-nav-title>
+       <p class="fsSemiSmall text-right padding-top"><strong>{{myUser.Codigo_comercio}}</strong><br>Codigo de comercio</p>
+    </ion-nav-title>
+    <ion-nav-buttons side="secondary">
+        <a ui-sref="qr({id: myUser.Id})" class="button button-icon icon icon-qr positive"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <!--<a ion-back>Volver</a>-->
+        <div class="padding">
+            <h2>{{pedido.Comprador.Razon_social}}</h2>
+        </div>
+        <div class="row content">
+            <div style="width:100%" class="list card">
+                <a href="#" class="item item-icon-left">
+                    <i class="icon ion-bag"></i> Ref: {{pedido.Referencia}}
+                </a>
+                <a href="#" class="item item-icon-left">
+                    <i class="icon ion-calendar"></i> {{pedido.Fecha}}
+                </a>
+                <a href="#" class="item item-icon-left">
+                    <i class="icon ion-card"></i> {{pedido.Importe}}€
+                </a>
+            </div>
+        </div>
+        <div class="padding" ng-show="!pedido.Valoracion || !pedido.Fichero.Id">
+            <div class=""><p>Si quieres puedes:</p></div>
+        </div>
+        <div class="padding">
+            <div class="row">
+                <p>
+                    <span ng-if="!pedido.Valoracion">
+                       Valorar al comprador
+                     </span>
+                    <span ng-if="pedido.Valoracion">
+                       La valoracion del comprador es
+                     </span>:
+                    <star-rating rating-value="pedido.Valoracion" data-max="5" class="rating  fsSemiBig" no-update="pedido.Valoracion" on-rating-selected="valorarPedido(rating)"></star-rating>
+                </p>
+            </div>
+            <div ng-show="!pedido.Fichero.Id" class="row">
+                <p>Guardar ticket de compra:</p>
+                <p>
+                    <a class="button button-icon icon ion-image positive" ng-click="camara('file')"></a>
+                    <a class="button button-icon icon ion-camera positive" ng-click="camara('camera')"></a>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <ul style="width: 100%;">
+                <li class="padding" ng-repeat="imagen in imagenes">
+                    <ion-scroll zooming="true" style="width: 100%; height: 100%">
+                        <img src="{{imagen}}" style="width: 100%; height: 100%">
+                    </ion-scroll>
+                </li>
+            </ul>
+
+        </div>
+        <div ng-if="!pedido.Valoracion" class="padding row item tabs tabs-secondary tabs-icon-left">
+            <div class="title">
+                <p>Hay algún problema? <a ui-sref="index.cobrarDevolucion({id:pedido.Id})">Tramitar devolución</a>
+                </p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

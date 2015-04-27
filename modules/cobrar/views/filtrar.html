@@ -1,0 +1,67 @@
+<ion-view view-title="Filtrar">
+    <ion-nav-title>
+       <p class="fsSemiSmall text-right padding-top"><strong>{{myUser.Codigo_comercio}}</strong><br>Codigo de comercio</p>
+    </ion-nav-title>
+    <ion-nav-buttons side="secondary">
+        <a ui-sref="qr({id: myUser.Id})" class="button button-icon icon icon-qr positive"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="row">
+            <div class="col">
+                <h4>Fecha</h4>
+                <div class="list list-inset">
+                    <label class="item item-input">
+                        <span class="input-label">Desde</span>
+                        <input ng-model="pedidosB.desde" type="date" placeholder="Desde">
+                    </label>
+                    <label class="item item-input">
+                         <span class="input-label">Hasta</span>
+                        <input ng-model="pedidosB.hasta" type="date" placeholder="Hasta">
+                    </label>
+                </div>
+                <h4>Importe</h4>
+                <div class="list list-inset">
+                    <label class="item item-input">
+                         <span class="input-label">Desde</span>
+                        <input ng-model="pedidosB.importe_inicial"  type="number" placeholder="0">
+                    </label>
+                    <label class="item item-input">
+                         <span class="input-label">Hasta</span>
+                        <input ng-model="pedidosB.importe_final"  type="number" placeholder="">
+                    </label>
+                </div>
+                <button ng-click="enviarBusqueda(pedidosB)" class="button button-block button-positive">
+                  Mostrar Resultados
+                </button>
+            </div>
+        </div>
+        <div ng-if="!pedidos.length && sinDatos" class="card">
+          <div class="item item-text-wrap positive">
+            <i class="ion-close-circled positive"></i> No se han encontrado resultados.
+          </div>
+        </div>
+        <ion-spinner ng-if="cargando"></ion-spinner>
+
+        <ion-list class="listEmpresas" style=" height: 100%;overflow: auto;">
+          <ion-item ng-repeat="pedido in pedidos">
+            <div class="row">
+              <div class="col col-67"><h2><strong>{{pedido.Usuario.Razon_social}}</strong></h2></div>
+              <div class="col text-right distanciaEmpresaMap">{{ pedido.Fecha | date : format : fullDate }}</div>
+            </div>
+            <div class="row">
+              <div ng-class="pedido.valoracion > 0 ? 'balanced' : 'assertive'" class="col col-67">
+                Importe: <strong>{{pedido.Importe}}</strong><br>
+              </div>
+              <div class="col text-right">
+                <a nav-direction="forward" ui-sref="index.cobrarVerPedido({id:pedido.Id})" class="button button-outline button-positive">Ver</a>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+        <ion-infinite-scroll  ng-show="!cargando"
+            ng-if="cargarMasDatos"
+            distance="1%"
+            on-infinite="enviarBusquedaMas()"
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

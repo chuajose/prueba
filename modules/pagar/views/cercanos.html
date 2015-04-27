@@ -1,0 +1,38 @@
+<ion-view view-title="Cercanas">
+    <ion-content>
+      <div class="relative">
+        <ion-list ng-init="listVisible=false" ng-show="listVisible" class="listEmpresas" style="height:{{heightW*2-166}}px;overflow: auto;">
+            <ion-item ng-repeat="empresasCercana in markers  | orderBy:'distancia'"  ng-click="marcar($index,0)">
+              <div class="row">
+                <div class="col col-67"><h2><strong>{{empresasCercana.razon_social}}</strong></h2></div>
+                <div class="col text-right distanciaEmpresaMap">({{empresasCercana.distancia | number:2}} km)</div>
+              </div>
+              <div class="row">
+                <div class="col col-67">
+                  {{empresasCercana.actividad}}<br>
+                  Pedido máximo: <strong>{{empresasCercana.pedido_maximo | currency}}</strong><br>
+                  <a nav-direction="forward" ui-sref="index.pagar_empresa_ver({id:empresasCercana.id})" class="button button-clear button-positive verMas">Ver más</a>
+                </div>
+                <div class="col text-right">
+                  <div>
+                      <star-rating rating-value="empresasCercana.valoracion/2" no-update="true" data-max="5" class="rating"></star-rating>
+                  </div>
+                  <a nav-direction="forward" ui-sref="index.pagar_empresa_ver({id:empresasCercana.id, pago:1})" class="button button-outline button-positive">PAGAR</a>
+                </div>
+              </div>
+              <div class="row">
+                  <ion-option-button ng-class="{hide : empresasFavoritasStorage.indexOf(empresasCercana.id) &gt; -1}" ng-click="AddEmpresaFavorita(empresasCercana.id, empresasFavoritasStorage)" class="button-balanced ion-ios-checkmark-outline"></ion-option-button>
+                  <ion-option-button ng-class="{hide : empresasFavoritasStorage.indexOf(empresasCercana.id) == -1}" class="button-positive ion-ios-star"></ion-option-button>
+              </div>
+            </ion-item>
+        </ion-list>
+        <div data-tap-disabled="true" id="map_canvas" style="height:{{heightW*2-166}}px; width:100%" ng-hide="listVisible"></div>
+      </div>
+      <div class="bar bar-footer bar-stable">
+            <a class="text-center button button-icon icon ion-android-globe" ng-class="{'button-positive': !listVisible}" ng-click="listVisible = false; setClickeable(false);"></a>
+            <a class="text-center button button-icon icon ion-ios-list-outline" ng-class="{'button-positive': listVisible}" ng-click="listVisible = true; setClickeable(true);"></a>
+        </div>
+
+
+    </ion-content>
+</ion-view>

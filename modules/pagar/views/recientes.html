@@ -1,0 +1,36 @@
+<ion-view view-title="Recientes">
+    <ion-content delegate-handle="myScrollDelegateHandle">
+      <ion-spinner ng-if="cargando" class="spinner-positive"></ion-spinner>
+      <div ng-if="empresasRecientes">
+        <ion-list class="listEmpresas">
+          <ion-item ng-repeat="empresasReciente in empresasRecientes track by $index">
+            <div class="row">
+              <div class="col col-67"><h2><strong>{{empresasReciente.Razon_social}}</strong></h2></div>
+              <div class="col text-right distanciaEmpresaMap">({{empresasReciente.distancia | number:2}} km)</div>
+            </div>
+            <div class="row">
+              <div class="col col-67">
+                {{empresasReciente.actividad}}<br>
+                Pedido máximo: <strong>{{empresasReciente.Obligacion_venta | currency}}</strong><br>
+                <a nav-direction="forward" ui-sref="index.pagar_empresa_ver({id:empresasReciente.Id})" class="button button-clear button-positive verMas">Ver más</a>
+              </div>
+              <div class="col text-right">
+                <div>
+                    <star-rating rating-value="empresasReciente.Valoracion/20" no-update="true" data-max="5" class="rating"></star-rating>
+                </div>
+                <a nav-direction="forward" ui-sref="index.pagar_empresa_ver({id:empresasReciente.Id, pago:1})" class="button button-outline button-positive">PAGAR</a>
+              </div>
+            </div>
+            <div class="row">
+                <ion-option-button ng-class="{hide : empresasFavoritasStorage.indexOf(empresasReciente.Id) &gt; -1}" ng-click="AddEmpresaFavorita(empresasReciente.Id, empresasFavoritasStorage)" class="button-stable favoritosAdd ion-ios-star"></ion-option-button>
+                <ion-option-button ng-class="{hide : empresasFavoritasStorage.indexOf(empresasReciente.Id) == -1}" class="button-stable ion-ios-star favoritosInclude"></ion-option-button>
+            </div>
+          </ion-item>
+        </ion-list>
+        <ion-infinite-scroll on-infinite="loadMore(pagina)"  distance="10%" ng-if="MoreItemsAvailable"></ion-infinite-scroll>
+    </div>
+    <div ng-if="!empresasRecientes">
+      <p class="padding text-center calm"><strong>No tienes empresas recientes</strong></p>
+    </div>
+  </ion-content>
+</ion-view>
